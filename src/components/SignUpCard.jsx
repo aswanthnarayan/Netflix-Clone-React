@@ -1,17 +1,15 @@
 import {
   Card,
-  CardHeader,
   CardBody,
   CardFooter,
   Typography,
   Input,
-  Checkbox,
   Button,
 } from "@material-tailwind/react";
 import { account, ID } from "../lib/appwrite";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 export function SignUpCard() {
   const navigate = useNavigate();
@@ -26,11 +24,21 @@ export function SignUpCard() {
     const validationErrors = {};
 
     if (!name) validationErrors.name = "Name is required.";
+    if (!name.trim()) validationErrors.name = "Enter a valid Name";
     if (!email) validationErrors.email = "Email is required.";
+    if (errors.general && errors.general.includes("Invalid `email` param")) {
+      validationErrors.email = "Enter a valid email";
+    }
+    if (errors.general && errors.general.includes("A user with the same id")) {
+      validationErrors.email = "Email already exists";
+    }
     if (!password) validationErrors.password = "Password is required.";
     if (password !== confirmPassword)
       validationErrors.confirmPassword = "Passwords do not match.";
-
+    if (errors.general && errors.general.includes("Invalid `password` param")) {
+      validationErrors.confirmPassword = "Password must include 8 characters";
+      validationErrors.password = "Password must include 8 characters";
+    }
     // If there are validation errors, update the error state
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
@@ -42,7 +50,11 @@ export function SignUpCard() {
     try {
       // Create user with Appwrite
       await account.create(ID.unique(), email, password, name);
-      navigate('/signin');
+      navigate("/signin", {
+        state: {
+          message: `Successfully Registered! \n ${name} You can Sign In Now `,
+        },
+      });
     } catch (error) {
       console.error("Error during user registration: ", error);
       setErrors({ general: "Registration failed: " + error.message });
@@ -54,7 +66,7 @@ export function SignUpCard() {
     if (errors[field]) {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        [field]: null,  // Remove error for the specific field
+        [field]: null, // Remove error for the specific field
       }));
     }
   };
@@ -70,37 +82,55 @@ export function SignUpCard() {
           label="Name"
           size="lg"
           value={name}
-          onChange={handleInputChange(setName, 'name')} 
+          onChange={handleInputChange(setName, "name")}
           error={!!errors.name}
         />
-        {errors.name && <Typography color="red" variant="small">{errors.name}</Typography>}
+        {errors.name && (
+          <Typography color="red" variant="small">
+            {errors.name}
+          </Typography>
+        )}
         <Input
           color="white"
           label="Email"
           size="lg"
           value={email}
-          onChange={handleInputChange(setEmail, 'email')} 
+          onChange={handleInputChange(setEmail, "email")}
           error={!!errors.email}
         />
-        {errors.email && <Typography color="red" variant="small">{errors.email}</Typography>}
+        {errors.email && (
+          <Typography color="red" variant="small">
+            {errors.email}
+          </Typography>
+        )}
         <Input
           color="white"
+          type="password"
           label="Password"
           size="lg"
           value={password}
-          onChange={handleInputChange(setPassword, 'password')} 
+          onChange={handleInputChange(setPassword, "password")}
           error={!!errors.password}
         />
-        {errors.password && <Typography color="red" variant="small">{errors.password}</Typography>}
+        {errors.password && (
+          <Typography color="red" variant="small">
+            {errors.password}
+          </Typography>
+        )}
         <Input
           color="white"
+          type="password"
           label="Confirm Password"
           size="lg"
           value={confirmPassword}
-          onChange={handleInputChange(setConfirmPassword, 'confirmPassword')}
+          onChange={handleInputChange(setConfirmPassword, "confirmPassword")}
           error={!!errors.confirmPassword}
         />
-        {errors.confirmPassword && <Typography color="red" variant="small">{errors.confirmPassword}</Typography>}
+        {errors.confirmPassword && (
+          <Typography color="red" variant="small">
+            {errors.confirmPassword}
+          </Typography>
+        )}
       </CardBody>
       <CardFooter className="pt-0 flex flex-col gap-4">
         <Button color="red" variant="gradient" fullWidth onClick={handleSignUp}>
