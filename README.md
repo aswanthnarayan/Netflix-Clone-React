@@ -1,8 +1,25 @@
-# React + Vite
+# 🎬 Netflix Clone
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-featured, responsive **Netflix UI clone** built using **React**, **Tailwind CSS**, and **Appwrite** for authentication and backend services.
 
-Currently, two official plugins are available:
+## 🌐 Live Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+👉 [View Live Site](https://react-clone-2024.netlify.app/signin)
+
+## ✨ Features
+
+- 🔐 **Authentication** using Appwrite (Sign In / Sign Up / Logout)
+- 🎞️ Browse mock movies and play trailers using **React Player**
+- 🍿 Responsive UI styled with **TailwindCSS** + **Material Tailwind**
+- 📦 Toast notifications via **React Toastify**
+- 🔄 Loading spinners for better UX
+- 🧭 **React Router DOM** for client-side routing
+
+## 🔧 Tech Stack
+
+- **Frontend**: React, Vite, Tailwind CSS, Material Tailwind
+- **Backend**: Appwrite (Authentication & Storage)
+- **Others**: React Router, React Player, Toastify, Loader Spinners, ESLint
+
+## 📁 Folder Structure
+
